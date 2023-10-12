@@ -6,12 +6,9 @@ import {schemaTypes} from './schemas'
 export default defineConfig({
   name: 'default',
   title: 'sanity',
-
   projectId: 'xah5n4so',
   dataset: 'production',
-
   plugins: [deskTool(), visionTool()],
-
   schema: {
     types: schemaTypes,
   },

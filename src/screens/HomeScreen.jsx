@@ -18,8 +18,31 @@ import {
 } from "react-native-heroicons/outline"
 import Categories from "../components/Categories"
 import FeaturedRow from "../components/FeaturedRow"
+import { useState, useEffect } from "react"
+// import sanityClient from "../../sanity"
+import client from "../../sanity"
 
 const HomeScreen = () => {
+  const [featuredCategories, setFeaturedCategories] = useState([])
+
+  useEffect(() => {
+    client
+      .fetch(
+        `*[_type == "featured"] | order(_updatedAt desc) {
+            ...,
+            restaurants[]->{
+              ...,
+              dishes[]->
+            }
+          }
+        `
+      )
+      .then((data) => {
+        setFeaturedCategories(data)
+        // console.log(data)
+      })
+  }, [])
+
   return (
     <SafeAreaView
       style={SafeAndroidArea.AndroidSafeArea}
@@ -61,28 +84,19 @@ const HomeScreen = () => {
       {/** Body */}
       <ScrollView
         className="bg-gray-100"
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 120 }}
       >
         {/**Categories */}
         <Categories />
         {/**Featured */}
-        <FeaturedRow
-          id="testing 1"
-          title="Featured"
-          description="Paid placements from our partners"
-        />
-        {/**Tasty discounts */}
-        <FeaturedRow
-          id="testing 2"
-          title="Tasty discounts"
-          description="Everyone's enjoying these juicy discounts"
-        />
-        {/**Offers near you */}
-        <FeaturedRow
-          id="testing 3"
-          title="Offers near you"
-          description="Why not support your local restaurant tonight!"
-        />
+        {featuredCategories?.map((category) => (
+          <FeaturedRow
+            key={category._id}
+            id={category._id}
+            title={category.name}
+            description={category.short_description}
+          />
+        ))}
       </ScrollView>
     </SafeAreaView>
   )
