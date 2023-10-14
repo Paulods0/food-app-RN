@@ -1,13 +1,15 @@
 import { View, Text, TouchableOpacity } from "react-native"
-import React from "react"
+import React, { useMemo } from "react"
 import { useSelector } from "react-redux"
 import { selectBasketItems, selectBasketTotal } from "../features/basketSlice"
 import { useNavigation } from "@react-navigation/native"
 
 const BasketIcon = () => {
-  const items = useSelector(selectBasketItems)
-  let basketTotal = useSelector(selectBasketTotal)
   const navigation = useNavigation()
+  const items = useSelector(selectBasketItems)
+  const basketTotal = useSelector(selectBasketTotal)
+
+  if (items.length === 0) return null
 
   return (
     <View className="absolute bottom-4 z-50 w-full">

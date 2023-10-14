@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native"
-import React from "react"
+import React, { useEffect } from "react"
 import { SafeAndroidArea } from "../safeArea"
 import { useNavigation, useRoute } from "@react-navigation/native"
 import { useLayoutEffect } from "react"
@@ -22,9 +22,12 @@ import {
 } from "react-native-heroicons/solid"
 import DishRow from "../components/DishRow"
 import BasketIcon from "../components/BasketIcon"
+import { useDispatch } from "react-redux"
+import { setRestaurant } from "../features/restaurantSlice"
 
 const RestaurantScreen = () => {
   const navigation = useNavigation()
+  const dispatch = useDispatch()
 
   const {
     params: {
@@ -40,11 +43,29 @@ const RestaurantScreen = () => {
       lat,
     },
   } = useRoute()
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
     })
   }, [])
+
+  useEffect(() => {
+    dispatch(
+      setRestaurant({
+        id,
+        title,
+        imgUrl,
+        rating,
+        genre,
+        address,
+        short_description,
+        dishes,
+        long,
+        lat,
+      })
+    )
+  }, [dispatch])
 
   return (
     <>

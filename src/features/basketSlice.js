@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSelector, createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
   items: [],
@@ -15,7 +15,6 @@ export const basketSlice = createSlice({
       const index = state.items.findIndex(
         (item) => item.id === action.payload.id
       )
-
       const newBasket = [...state.items]
       if (index >= 0) {
         newBasket.splice(index, 1)
@@ -24,7 +23,6 @@ export const basketSlice = createSlice({
           `Can't remove product ${action.payload.id} as it's not in the basket`
         )
       }
-
       state.items = newBasket
     },
   },
@@ -38,6 +36,9 @@ export const selectBasaketItemById = (state, id) =>
   state.basket.items.filter((item) => item.id == id)
 
 export const selectBasketTotal = (state) =>
-  state.basket.items.reduce((total, item) => (total += item.price), 0)
+  state.basket.items.reduce((total, item) => {
+    total += item.price
+    return total
+  }, 0)
 
 export default basketSlice.reducer
