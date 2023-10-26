@@ -36,9 +36,12 @@ export const selectBasaketItemById = (state, id) =>
   state.basket.items.filter((item) => item.id == id)
 
 export const selectBasketTotal = (state) =>
-  state.basket.items.reduce((total, item) => {
-    total += item.price
-    return total
-  }, 0)
+  state.basket.items.reduce((total, item) => (total += item.price), 0)
+
+export const items = (state) => state.basket.items
+
+export const memoizedSelectBasketTotal = createSelector([items], (items) => {
+  items.reduce((total, item) => (total += item.price), 0) // Função de transformação
+})
 
 export default basketSlice.reducer

@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native"
 import { useDispatch, useSelector } from "react-redux"
 import { selectRestaurant } from "../features/restaurantSlice"
 import {
+  memoizedSelectBasketTotal,
   removeFromBasket,
   selectBasketItems,
   selectBasketTotal,
@@ -28,15 +29,15 @@ const BasketScreen = () => {
     setGroupedItemsInBasket(groupedItems)
   }, [items])
 
-  console.log(groupedItemsInBasket)
+  // console.log(groupedItemsInBasket)
   return (
-    <View className="mt-6 relative flex-1">
-      <View className="relative rounded-t-3xl  flex-1 bg-gray-100 pb-10 ">
+    <View className="relative flex-1">
+      <View className="relative rounded-t-3xl flex-1 bg-gray-100 pb-10 ">
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          className="absolute top-4 right-4 bg-gray-100 rounded-full z-10"
+          className="absolute top-8 right-4 bg-gray-100 rounded-full z-10"
         >
-          <XCircleIcon size={50} color="#00BBCC" />
+          <XCircleIcon size={40} color="#00BBCC" />
         </TouchableOpacity>
 
         <View className="w-full p-4 bg-white border-b rounded-t-3xl border-gray-300">
@@ -105,7 +106,10 @@ const BasketScreen = () => {
             </Text>
           </View>
 
-          <TouchableOpacity className="rounded-lg p-4 bg-[#00BBCC]">
+          <TouchableOpacity
+            onPress={() => navigation.navigate("PreparingOrderScreen")}
+            className="rounded-lg p-4 bg-[#00BBCC]"
+          >
             <Text className="text-center text-white text-lg font-bold">
               Place Order
             </Text>
